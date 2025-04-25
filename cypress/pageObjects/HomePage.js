@@ -56,4 +56,24 @@ export class HomePage extends BasePage {
   static get clickSubmitButton() {
     return cy.get("#submitButton");
   }
+
+  static get validatedefault() {
+    return cy.get("div.mat-mdc-paginator-range-label");
+  }
+
+  static get clicktochangedefault() {
+    return cy.get("div.mat-mdc-paginator-touch-target");
+  }
+
+  static get changedefault() {
+    return cy.get(".mdc-list-item__primary-text");
+  }
+
+  static get buyproduct() {
+    return cy.get('button:contains("Add to Basket")');
+  }
+
+  static get clickBasket() {
+    return cy.get('button:contains("Your Basket")');
+  }
 }
