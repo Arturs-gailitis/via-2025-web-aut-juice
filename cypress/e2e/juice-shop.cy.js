@@ -5,6 +5,11 @@ import { BasketPage } from "../pageObjects/BasketPage";
 import { SelectAddressPage } from "../pageObjects/SelectAddressPage";
 import { DeliveryMethodPage } from "../pageObjects/DeliveryMethodPage";
 import { PaymentOptionsPage } from "../pageObjects/PaymentOptionsPage";
+import { OrderSummaryPage } from "../pageObjects/OrderSummaryPage";
+import { OrderCompletionPage } from "../pageObjects/OrderCompletionPage";
+import { SavedAddressesPage } from "../pageObjects/SavedAddressesPage";
+import { CreateAddressPage } from "../pageObjects/CreateAddressPage";
+import { SavedPaymentMethodsPage } from "../pageObjects/SavedPaymentMethodsPage";
 
 
 describe("Juice-shop scenarios", () => {
@@ -16,8 +21,10 @@ describe("Juice-shop scenarios", () => {
     });
 
     it("Login", () => {
+
       // Click Account button
       HomePage.accountButton.click();
+
       // Click Login button
       HomePage.loginButton.click();
 
@@ -34,28 +41,31 @@ describe("Juice-shop scenarios", () => {
       HomePage.accountButton.click();
 
       // Validate that "demo" account name appears in the menu section
-      HomePage.userProfileButton.should("contain.text", "demo");
+      HomePage.verifyAcount.should("contain.text", "demo");
     });
 
     it("Registration", () => {
+
       // Click Account button
       HomePage.accountButton.click();
 
       // Login button
       HomePage.loginButton.click();
+
       // Click "Not yet a customer?"
-      LoginPage.notYetCustomerLink.click();
+      LoginPage.GuestLink.click();
 
       // Find - how to generate random number in JS
-      // Use that number to genarate unique email address, e.g.: email7584@ebox.com
       const randomNumber = Math.floor(Math.random() * 900000) + 100000;
 
-      // Save that email address to some variable
+      // Use that number to genarate unique email address, e.g.: email7584@ebox.com
       const emailAddress = `email${randomNumber}@ebox.com`;
-      const password = "ABC123#()";
+
+      // Save that email address to some variable
       RegistrationPage.emailField.type(emailAddress);
 
       // Fill in password field and repeat password field with same password
+      const password = "ABC123#()";
       RegistrationPage.passwordField.type(password);
       RegistrationPage.repeatPasswordField.type(password)
 
@@ -63,10 +73,10 @@ describe("Juice-shop scenarios", () => {
       RegistrationPage.securityQuestionField.click();
 
       // Select  "Name of your favorite pet?"
-      RegistrationPage.securityQuestionOptions.contains("Name of your favorite pet?").click();
+      RegistrationPage.securityQuestions.contains("Name of your favorite pet?").click();
 
       // Fill in answer
-      RegistrationPage.answerField.type("Beethoven");
+      RegistrationPage.answerField.type("Cat");
 
       // Click Register button
       RegistrationPage.registrationButton.click();
@@ -83,8 +93,8 @@ describe("Juice-shop scenarios", () => {
       // Click Account button
       HomePage.accountButton.click();
 
-      // Validate that account name (with previously created email address) appears in the menu section
-      HomePage.userProfileButton.should("contain.text", emailAddress);
+      // Validate that account name (with previously created email address) appears in the menu section userProfileButton
+      HomePage.verifyAcount.should("contain.text", emailAddress);
     });
   });
 
@@ -102,7 +112,7 @@ describe("Juice-shop scenarios", () => {
       HomePage.searchField.type("Lemon{enter}");
 
       // Select a product card - Lemon Juice (500ml)
-      HomePage.productBox.contains("Lemon Juice (500ml").click();
+      HomePage.productBox.contains("Lemon Juice (500ml)").click();
 
       // Validate that the card (should) contains "Sour but full of vitamins."
       HomePage.productInfo.should("contain.text", "Sour but full of vitamins.");
@@ -227,60 +237,124 @@ describe("Juice-shop scenarios", () => {
     });
 
     // Create scenario - Buy Girlie T-shirt
-    it.only("Buy Girlie T-shirt", () =>{
+    it("Buy Girlie T-shirt", () =>{
+
       // Click on search icon
       HomePage.searchIcon.click();
+
       // Search for Girlie
       HomePage.searchField.type("Girlie{enter}");
+
       // Add to basket "Girlie"
       HomePage.buyproduct.click();
+
       // Click on "Your Basket" button
       HomePage.clickBasket.eq(0).click();
+
       // Create page object - BasketPage
       // Click on "Checkout" button
       BasketPage.clickCheckout.click();
+
       // Create page object - SelectAddressPage
       // Select address containing "United Fakedom"
-      SelectAddressPage.selectAddress.click();
+      SelectAddressPage.selectAddress.eq(0).click();
+
       // Click Continue button
       SelectAddressPage.clickContinue.click();
+
       // Create page object - DeliveryMethodPage
       // Select delivery speed Standard Delivery
       DeliveryMethodPage.selectDelivery.eq(2).click();
+
       // Click Continue button
       DeliveryMethodPage.clickContinue.click();
+
       // Create page object - PaymentOptionsPage
       // Select card that ends with "5678"
-      PaymentOptionsPage.selectCard.click();
+      PaymentOptionsPage.selectCard.eq(0).click();
+
       // Click Continue button
+      PaymentOptionsPage.clickContinue.click();
+
       // Create page object - OrderSummaryPage
       // Click on "Place your order and pay"
+      OrderSummaryPage.clickPlaceYourOrder.click();
+
       // Create page object - OrderCompletionPage
       // Validate confirmation - "Thank you for your purchase!"
+      OrderCompletionPage.validateConfermation.should('contain.text', "Thank you for your purchase!");
     });
 
     // Create scenario - Add address
-    // Click on Account
-    // Click on Orders & Payment
-    // Click on My saved addresses
-    // Create page object - SavedAddressesPage
-    // Click on Add New Address
-    // Create page object - CreateAddressPage
-    // Fill in the necessary information
-    // Click Submit button
-    // Validate that previously added address is visible
+    it('Add address', () => {
+
+      // Click on Account
+      HomePage.accountButton.click();
+
+      // Click on Orders & Payment
+      HomePage.clickOrders.eq(1).click();
+
+      // Click on My saved addresses
+      HomePage.mySavedAddresses.eq(6).click();
+
+      // Create page object - SavedAddressesPage
+      // Click on Add New Address
+      SavedAddressesPage.clickAddAdress.click();
+
+      // Create page object - CreateAddressPage
+      // Fill in the necessary information
+      CreateAddressPage.typeText.eq(1).type('Latvia');
+      CreateAddressPage.typeText.eq(2).type('Arturs Gailitis');
+      CreateAddressPage.typeText.eq(3).type('20 376 395');
+      CreateAddressPage.typeText.eq(4).type('3345');
+      CreateAddressPage.typeAddress.type('Miera iela 18');
+      CreateAddressPage.typeText.eq(5).type('Valmiera');
+      CreateAddressPage.typeText.eq(6).type('Valmieras novads');
+
+      // Click Submit button
+      CreateAddressPage.clickSubmit.click();
+      
+      // Validate that previously added address is visible
+      SavedAddressesPage.verifyAddress.eq(5).should('contain.text', 'Arturs Gailitis');
+      SavedAddressesPage.verifyAddress.eq(6).should('contain.text', 'Miera iela 18, Valmiera, Valmieras novads, 3345')
+      SavedAddressesPage.verifyAddress.eq(7).should('contain.text', 'Latvia');
+    });
 
     // Create scenario - Add payment option
-    // Click on Account
-    // Click on Orders & Payment
-    // Click on My payment options
-    // Create page object - SavedPaymentMethodsPage
-    // Click Add new card
-    // Fill in Name
-    // Fill in Card Number
-    // Set expiry month to 7
-    // Set expiry year to 2090
-    // Click Submit button
-    // Validate that the card shows up in the list
+    it('Add payment optioen', () => {
+
+      // Click on Account
+      HomePage.accountButton.click();
+
+      // Click on Orders & Payment
+      HomePage.clickOrders.eq(1).click();
+
+      // Click on My payment options
+      HomePage.mySavedAddresses.eq(7).click();
+
+      // Create page object - SavedPaymentMethodsPage
+      // Click Add new card
+      SavedPaymentMethodsPage.expandNewCard.click();
+
+      // Fill in Name
+      SavedPaymentMethodsPage.typeText.eq(1).type('Credit Card');
+
+      // Fill in Card Number
+      SavedPaymentMethodsPage.typeText.eq(2).type('1234567890987654');
+
+      // Set expiry month to 7
+      SavedPaymentMethodsPage.clickDate.eq(0).select('7');
+
+      // Set expiry year to 2090
+      SavedPaymentMethodsPage.clickDate.eq(1).select('2090');
+
+      // Click Submit button
+      SavedPaymentMethodsPage.clickSubmit.click();
+
+      // Validate that the card shows up in the list
+      SavedPaymentMethodsPage.verifyPaymentMethod.eq(4).should('contain.text', '************7654');
+      SavedPaymentMethodsPage.verifyPaymentMethod.eq(5).should('contain.text', 'Credit Card');
+      SavedPaymentMethodsPage.verifyPaymentMethod.eq(6).should('contain.text', '7/2090');
+    })
   });
 });

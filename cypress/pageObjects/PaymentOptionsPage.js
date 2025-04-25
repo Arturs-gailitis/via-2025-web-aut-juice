@@ -6,6 +6,10 @@ export class PaymentOptionsPage extends BasePage {
     }
 
     static get selectCard() {
-        return cy.get('div.mat-radio-button');
+        return cy.get('input.mdc-radio__native-control');
+    }
+
+    static get clickContinue() {
+        return cy.get('button:contains("Continue")');
     }
 } 

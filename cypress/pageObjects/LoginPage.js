@@ -21,7 +21,7 @@ export class LoginPage extends BasePage {
     return cy.get("button#loginButton") 
   }
 
-  static get notYetCustomerLink() {
+  static get GuestLink() {
     return cy.get("#newCustomerLink");
   }
 }

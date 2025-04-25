@@ -21,7 +21,7 @@ export class HomePage extends BasePage {
     return cy.get("button#navbarLoginButton")
   }
 
-  static get userProfileButton() {
+  static get verifyAcount() {
     return cy.get("button[aria-label='Go to user profile']");
   }
 
@@ -75,5 +75,13 @@ export class HomePage extends BasePage {
 
   static get clickBasket() {
     return cy.get('button:contains("Your Basket")');
+  }
+
+  static get clickOrders() {
+    return cy.get('button.mat-mdc-menu-item');
+  }
+
+  static get mySavedAddresses() {
+    return cy.get('button.mat-mdc-menu-item');
   }
 }
